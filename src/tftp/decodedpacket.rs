@@ -8,11 +8,11 @@ pub struct DecodedPacket<P: Sized> {
     packet: P,
 }
 
-impl<P: DecodePacket<'static>> DecodedPacket<P> {
+impl<P: DecodePacket<'static> + Default> DecodedPacket<P> {
     pub fn decode(raw: RawPacket) -> Option<DecodedPacket<P>> {
         let mut p = DecodedPacket {
             raw: raw,
-            packet: unsafe { mem::uninitialized() },
+            packet: P::default(),
         };
         P::decode(unsafe { extend_buf_lifetime(&p.raw.packet_buf()) }).map(|packet| {
             p.packet = packet;

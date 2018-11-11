@@ -8,6 +8,7 @@ use std::convert::From;
 use std::error;
 use std::fmt;
 use std::str::{self, FromStr};
+use std::default::Default;
 
 use netascii::{NetasciiString, to_netascii, from_netascii};
 
@@ -440,6 +441,12 @@ impl<'a> EncodePacket for DataPacketOctet<'a> {
             buf: b.into_inner(),
             len: self.len()
         }
+    }
+}
+
+impl<'a> Default for DataPacketOctet<'a> {
+    fn default() -> Self {
+        DataPacketOctet::from_vec(0, vec![], 0)
     }
 }
 
